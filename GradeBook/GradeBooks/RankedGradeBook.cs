@@ -10,5 +10,18 @@ namespace GradeBook.GradeBooks
         {
             Type = Enums.GradeBookType.Ranked;
         }
+
+        public override char GetLetterGrade(double grade)
+        {
+            if(Students.Count < 5)
+            {
+                throw new InvalidOperationException("Ranked grading requires at least 5 students.");
+            }
+            
+           
+
+
+            
+        }
     }
 }
