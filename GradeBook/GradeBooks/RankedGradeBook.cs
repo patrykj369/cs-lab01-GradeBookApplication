@@ -9,41 +9,29 @@ namespace GradeBook.GradeBooks
 {
     public class RankedGradeBook : BaseGradeBook
     {
-        public RankedGradeBook(string name):base(name)
+        public RankedGradeBook(string name, bool isWeighted):base(name, isWeighted)
         {
             Type = Enums.GradeBookType.Ranked;
         }
 
-        public override char GetLetterGrade(double grade)
+        public override char GetLetterGrade(double averageGrade)
         {
-            if(Students.Count < 5)
-            {
+            if (Students.Count < 5)
                 throw new InvalidOperationException("Ranked grading requires at least 5 students.");
-            }
 
-            var level = (int)Math.Ceiling(Students.Count * 0.2); //zwraca liczbe calkowita ilosci studentow podzielona przez 5(20%)
-            var newList = Students.OrderByDescending(x => x.AverageGrade).Select(x => x.AverageGrade).ToList(); //tworzy newList(liste) z posortowanymi ocenami malejaco
+            var level = (int)Math.Ceiling(Students.Count * 0.2);
+            var newList = Students.OrderByDescending(a => a.AverageGrade).Select(a => a.AverageGrade).ToList();
 
-            if(newList[level - 1] <= grade) //jezeli ocena wejsciowa jest wieksza od elementu w liscie rownemu 20% ilosci studentow - 1 to zwraca A
-            {
+            if (newList[level - 1] <= averageGrade)
                 return 'A';
-            }
-            else if (newList[(level * 2) - 1] <= grade)
-            {
+            else if (newList[(level * 2) - 1] <= averageGrade)
                 return 'B';
-            }
-            else if(newList[(level * 3) - 1] <= grade)
-            {
+            else if (newList[(level * 3) - 1] <= averageGrade)
                 return 'C';
-            }
-            else if(newList[(level * 4) - 1] <= grade)
-            {
+            else if (newList[(level * 4) - 1] <= averageGrade)
                 return 'D';
-            }
             else
-            {
                 return 'F';
-            }
         }
 
         public override void CalculateStatistics()
